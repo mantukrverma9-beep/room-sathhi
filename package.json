@@ -1,0 +1,8 @@
+{
+  "name": "roomsaathi",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RoomSaathi room rental marketplace starter",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": { "start": "node server.js", "dev": "node server.js" }
+}

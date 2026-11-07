@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f7f8f4">
+        <meta name="description" content="Find a room, flat or PG that feels like home with RoomSaathi.">
+        <title>RoomSaathi — Find a place that feels like home</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <header class="topbar">
+            <a class="brand" href="./"><span class="brand-mark">⌂</span><span>room<span class="brand-accent">saathi</span></span></a>
+            <nav class="desktop-nav">
+                <a href="#discover">Find a place</a><a href="#how">How it works</a>
+            </nav>
+            <div class="nav-actions">
+                <button class="text-button" id="myListingsBtn" hidden>
+                    My listings
+                </button>
+                <button class="text-button" id="adminReviewBtn" hidden>
+                    Review listings
+                </button>
+                <button class="text-button" id="loginBtn">
+                    Log in
+                </button>
+                <button class="button button-dark button-small" id="listTop">
+                    List your place<span>↗</span>
+                </button>
+            </div>
+            <button class="mobile-menu" id="mobileMenu" aria-label="Open menu">
+                ☰
+            </button>
+        </header>
+        <div class="hosting-notice" id="hostingNotice" hidden>
+            GitHub Pages preview: browsing sample rooms works here. Login, posting and owner tools need the Node.js backend.
+        </div>
+        <!-- Homepage search, room cards and the simple how-it-works section. -->
+        <main>
+            <section class="hero">
+                <div class="hero-copy">
+                    <div class="eyebrow">
+                        <span class="eyebrow-dot"></span> YOUR NEXT CHAPTER STARTS HERE
+                    </div>
+                    <h1>
+                        A place to land.<br><em>A place to belong.</em>
+                    </h1>
+                    <p class="hero-lede">
+                        Thoughtful rooms, welcoming PGs and easy flatshares—find a place that feels right, wherever life takes you.
+                    </p>
+                    <form class="search-panel" id="searchForm">
+                        <label class="search-field location-field">
+                            <span class="field-icon">⌖</span><span><small>WHERE</small><input id="searchQ" placeholder="City, area, district or PIN code" autocomplete="off"></span>
+                        </label>
+                        <label class="search-field">
+                            <span class="field-icon">⌂</span><span><small>HOME TYPE</small>
+                            <select id="searchType">
+                                <option>
+                                    Any
+                                </option>
+                                <option>
+                                    Private room
+                                </option>
+                                <option>
+                                    Shared room
+                                </option>
+                                <option>
+                                    PG
+                                </option>
+                                <option>
+                                    Flat
+                                </option>
+                                <option>
+                                    House
+                                </option>
+                            </select>
+                            </span>
+                        </label>
+                        <label class="search-field budget-field">
+                            <span class="field-icon">₹</span><span><small>MONTHLY BUDGET</small>
+                            <select id="searchBudget">
+                                <option value="">
+                                    Any budget
+                                </option>
+                                <option value="1500">
+                                    Up to ₹1,500
+                                </option>
+                                <option value="5000">
+                                    Up to ₹5,000
+                                </option>
+                                <option value="8000">
+                                    Up to ₹8,000
+                                </option>
+                                <option value="12000">
+                                    Up to ₹12,000
+                                </option>
+                                <option value="20000">
+                                    Up to ₹20,000
+                                </option>
+                                <option value="30000">
+                                    Up to ₹30,000
+                                </option>
+                            </select>
+                            </span>
+                        </label>
+                        <button class="button button-green search-button">
+                            Find my place<span>→</span>
+                        </button>
+                    </form>
+                    <div class="hero-proof">
+                        <div class="avatar-stack">
+                            <span>R</span><span>A</span><span>M</span><span>+</span>
+                        </div>
+                        <span><strong>Good homes, good people.</strong><br>Made for the way you live.</span>
+                        <div class="proof-divider">
+                        </div>
+                        <span class="rating">★★★★★ <small>Built around trust</small></span>
+                    </div>
+                </div>
+                <div class="hero-art">
+                    <div class="hero-photo">
+                        <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1400&q=90" alt="Bright, welcoming modern living room">
+                        <div class="photo-caption">
+                            <span class="caption-icon">✳</span><span><b>Find your kind of space</b><small>Room to grow into</small></span><span class="caption-arrow">↗</span>
+                        </div>
+                    </div>
+                    <div class="floating-note">
+                        <span class="note-icon">♡</span><span><b>More than four walls</b><small>Find your people, too.</small></span>
+                    </div>
+                    <div class="hero-sparkle">
+                        ✳
+                    </div>
+                </div>
+                <div class="hero-bottom">
+                    <span>MADE FOR NEW BEGINNINGS</span><span class="scroll-cue">SCROLL TO EXPLORE <b>↓</b></span>
+                </div>
+            </section>
+            <section class="trust-strip">
+                <span class="trust-label">A better way to find your place</span>
+                <div>
+                    <i>✦</i> Clear rent &amp; rules
+                </div>
+                <div>
+                    <i>◎</i> Real spaces, real details
+                </div>
+                <div>
+                    <i>♡</i> People-first renting
+                </div>
+            </section>
+            <!-- Room search results. JavaScript fills the cards from the listings API. -->
+            <section class="discover section-wrap" id="discover">
+                <div class="section-heading">
+                    <div>
+                        <div class="eyebrow">
+                            A GOOD PLACE IS OUT THERE
+                        </div>
+                        <h2>
+                            Find your<em>somewhere.</em>
+                        </h2>
+                        <p>
+                            Explore spaces people have opened up for you.
+                        </p>
+                    </div>
+                    <button class="button button-outline" id="listSection">
+                        Have a room to share?<span>↗</span>
+                    </button>
+                </div>
+                <div class="filter-row">
+                    <div id="resultCount">
+                        A few places to get you started
+                    </div>
+                    <button class="filter-chip active" data-filter="Any">
+                        All stays
+                    </button>
+                    <button class="filter-chip" data-filter="Private room">
+                        Private rooms
+                    </button>
+                    <button class="filter-chip" data-filter="PG">
+                        PGs · from ₹1,500
+                    </button>
+                    <button class="filter-chip" data-filter="Flat">
+                        Flats · from ₹5,000
+                    </button>
+                </div>
+                <div class="listing-grid" id="listingGrid">
+                    <div class="loading-card">
+                        Finding lovely places…
+                    </div>
+                </div>
+                <div class="empty-state" id="emptyState" hidden>
+                    <span>⌂</span>
+                    <h3>
+                        No places found just yet
+                    </h3>
+                    <p>
+                        Try a different location or budget, or check back soon.
+                    </p>
+                </div>
+            </section>
+            <section class="how-section" id="how">
+                <div class="how-photo">
+                    <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1100&q=85" alt="Warm sunlit home interior">
+                    <div class="photo-stamp">
+                        A softer<br>way to move<br><b>✳</b>
+                    </div>
+                </div>
+                <div class="how-copy">
+                    <div class="eyebrow">
+                        LESS SCROLLING, MORE SETTLING IN
+                    </div>
+                    <h2>
+                        Finding home<br>should feel <em>simple.</em>
+                    </h2>
+                    <div class="step">
+                        <span>01</span>
+                        <div>
+                            <b>Tell us what feels right</b>
+                            <p>
+                                Pick an area, a budget and the kind of place you need.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span>02</span>
+                        <div>
+                            <b>Get the whole picture</b>
+                            <p>
+                                See photos, monthly rent, deposit, amenities and house rules upfront.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <span>03</span>
+                        <div>
+                            <b>Meet your next place</b>
+                            <p>
+                                Reach out to the host and arrange a visit before you decide.
+                            </p>
+                        </div>
+                    </div>
+                    <button class="button button-dark" id="browseBtn">
+                        Explore available places<span>→</span>
+                    </button>
+                </div>
+            </section>
+            <section class="host-cta">
+                <div class="cta-star">
+                    ✳
+                </div>
+                <div>
+                    <div class="eyebrow">
+                        HAVE A SPACE TO SHARE?
+                    </div>
+                    <h2>
+                        Good homes deserve<br><em>good housemates.</em>
+                    </h2>
+                    <p>
+                        Share your space with people looking for a fresh start.
+                    </p>
+                </div>
+                <button class="button button-light" id="listBottom">
+                    List your place<span>↗</span>
+                </button>
+                <div class="cta-doodle">
+                    ⌂
+                </div>
+            </section>
+        </main>
+        <footer>
+            <a class="brand" href="/"><span class="brand-mark">⌂</span><span>room<span class="brand-accent">saathi</span></span></a><span>Find a place that feels like home.</span><span>© 2026 RoomSaathi · Built for better beginnings</span>
+        </footer>
+        <!-- Owners use this form to add a room or edit an existing listing. -->
+        <dialog id="listingDialog">
+            <form id="listingForm" method="dialog">
+                <div class="dialog-head">
+                    <div>
+                        <div class="eyebrow">
+                            OPEN YOUR DOOR
+                        </div>
+                        <h2>
+                            List your<em>place.</em>
+                        </h2>
+                        <p>
+                            India first, starting in Chhattisgarh. Add a district, town, locality and PIN so renters can find you.
+                        </p>
+                    </div>
+                    <button type="button" class="close-dialog" id="closeDialog" aria-label="Close">
+                        ×
+                    </button>
+                </div>
+                <div class="form-grid">
+                    <label class="wide">
+                        Listing title<input required name="title" maxlength="100" placeholder="e.g. Quiet room in Shankar Nagar">
+                    </label>
+                    <label>
+                        State<input required name="state" id="listingState" list="indiaStates" value="Chhattisgarh" autocomplete="address-level1" placeholder="Chhattisgarh">
+                    </label>
+                    <label>
+                        District<input required name="district" id="listingDistrict" list="cgDistricts" placeholder="Raipur">
+                    </label>
+                    <label>
+                        City / town<input required name="city" id="listingCity" list="cgCities" placeholder="Raipur">
+                    </label>
+                    <label>
+                        Area / locality<input required name="area" id="listingArea" placeholder="Shankar Nagar">
+                    </label>
+                    <label class="wide">
+                        PIN code<span class="optional">(6 digits, helps renters find nearby places)</span>
+                        <div class="pin-controls">
+                            <input name="pincode" id="listingPincode" inputmode="numeric" maxlength="6" pattern="[0-9]{6}" placeholder="492001">
+                            <button type="button" class="button button-outline" id="lookupPin">
+                                Look up
+                            </button>
+                        </div>
+                        <small class="rent-hint" id="pinLookupStatus">State → district → city/town → area → PIN. Lookup sends this 6 digit PIN to a public postal service; you can also enter the location yourself.</small>
+                        <select id="pinOffice" class="pin-office" hidden aria-label="Choose a post office">
+                        </select>
+                    </label>
+                    <label>
+                        Home type
+                        <select required name="type" id="listingType">
+                            <option>
+                                Private room
+                            </option>
+                            <option>
+                                Shared room
+                            </option>
+                            <option>
+                                PG
+                            </option>
+                            <option>
+                                Flat
+                            </option>
+                            <option>
+                                House
+                            </option>
+                        </select>
+                    </label>
+                    <label>
+                        Who can stay?
+                        <select name="gender">
+                            <option>
+                                Any
+                            </option>
+                            <option>
+                                Women
+                            </option>
+                            <option>
+                                Men
+                            </option>
+                        </select>
+                    </label>
+                    <label>
+                        Monthly rent (₹)<input required name="rent" id="listingRent" type="number" min="1" placeholder="9500"><small class="rent-hint" id="rentHint">Enter monthly rent.</small>
+                    </label>
+                    <label>
+                        Refundable deposit (₹)<input required name="deposit" type="number" min="0" placeholder="15000">
+                    </label>
+                    <label>
+                        Contact phone<span class="optional">(shown to renters)</span><input name="phone" type="tel" placeholder="+91">
+                    </label>
+                    <label class="wide">
+                        Amenities<span class="optional">(comma separated)</span><input name="amenities" placeholder="Wi-Fi, furnished, kitchen">
+                    </label>
+                    <label class="wide">
+                        House / PG rules<span class="optional">(one per line)</span><textarea name="rules" rows="3" placeholder="Visitors allowed until 9 PM&#10;No smoking indoors&#10;1 month notice"></textarea>
+                    </label>
+                    <label class="wide">
+                        Room photos<span class="optional">(up to 5, 8 MB each)</span><input name="photoFiles" id="photoFiles" type="file" accept="image/jpeg,image/png,image/webp,image/gif" multiple><small class="rent-hint">Clear photos help renters understand the space.</small>
+                        <div id="photoPreview" class="media-preview">
+                        </div>
+                    </label>
+                    <label class="wide">
+                        Room video<span class="optional">(MP4, WebM or MOV, up to 25 MB)</span><input name="videoFile" id="videoFile" type="file" accept="video/mp4,video/webm,video/quicktime"><small class="rent-hint" id="videoName">Optional short room tour.</small><small class="rent-hint existing-media-note" id="existingMediaNote"></small>
+                    </label>
+                </div>
+                <label class="checkbox-row">
+                    <input type="checkbox" name="furnished"> Furnished
+                </label>
+                <div class="form-error" id="formError" role="alert">
+                </div>
+                <button class="button button-green submit-listing">
+                    Publish listing<span>→</span>
+                </button>
+                <p class="form-note">
+                    Please only post accurate details. Renters should visit and confirm before paying.
+                </p>
+            </form>
+        </dialog>
+        <dialog id="detailsDialog">
+            <div class="details-shell">
+                <button type="button" class="close-dialog details-close" id="closeDetails" aria-label="Close">
+                    ×
+                </button>
+                <div id="detailsContent">
+                </div>
+            </div>
+        </dialog>
+        <dialog id="myListingsDialog">
+            <div class="manage-shell">
+                <div class="dialog-head">
+                    <div>
+                        <div class="eyebrow">
+                            YOUR PROPERTY DESK
+                        </div>
+                        <h2>
+                            My<em>listings.</em>
+                        </h2>
+                        <p>
+                            Update availability or remove a place you no longer rent.
+                        </p>
+                    </div>
+                    <button type="button" class="close-dialog" id="closeMyListings" aria-label="Close">
+                        ×
+                    </button>
+                </div>
+                <div id="myListingsContent" class="my-listings-content">
+                </div>
+            </div>
+        </dialog>
+        <dialog id="adminDialog">
+            <div class="manage-shell">
+                <div class="dialog-head">
+                    <div><div class="eyebrow">SAFER RENTALS</div><h2>Review<em>listings.</em></h2><p>Approve accurate places before renters can see them.</p></div>
+                    <button type="button" class="close-dialog" id="closeAdmin" aria-label="Close">×</button>
+                </div>
+                <div id="adminQueue" class="my-listings-content"></div>
+            </div>
+        </dialog>
+        <dialog id="loginDialog">
+            <form id="authForm" class="login-content">
+                <button type="button" class="close-dialog" id="closeLogin" aria-label="Close">
+                    ×
+                </button>
+                <div class="eyebrow">
+                    A LITTLE MORE ROOM TO BELONG
+                </div>
+                <h2 id="authTitle">
+                    Welcome<em>back.</em>
+                </h2>
+                <p id="authIntro">
+                    Log in to publish your place and manage your listings.
+                </p>
+                <div class="auth-tabs">
+                    <button type="button" class="auth-tab active" data-mode="login">
+                        Log in
+                    </button>
+                    <button type="button" class="auth-tab" data-mode="register">
+                        Create account
+                    </button>
+                </div>
+                <label class="auth-name" id="authNameWrap" hidden>
+                    Your name<input name="name" autocomplete="name" placeholder="Your name">
+                </label>
+                <label>
+                    Email address<input name="email" type="email" required autocomplete="email" placeholder="you@example.com">
+                </label>
+                <label>
+                    Password<input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="At least 8 characters">
+                </label>
+                <button type="button" class="text-button" id="forgotPasswordBtn">Forgot password?</button>
+                <div class="auth-error" id="authError" role="alert">
+                </div>
+                <div class="auth-info" id="authInfo" role="status"></div>
+                <button type="button" class="text-button" id="resendVerificationBtn" hidden>Resend verification link</button>
+                <button class="button button-dark auth-submit" id="authSubmit">
+                    Log in<span>→</span>
+                </button>
+                <p class="form-note">
+                    Demo account data is stored locally on this computer.
+                </p>
+            </form>
+        </dialog>
+        <dialog id="resetDialog">
+            <form id="resetForm" class="login-content">
+                <button type="button" class="close-dialog" id="closeReset" aria-label="Close">×</button>
+                <div class="eyebrow">ACCOUNT SECURITY</div>
+                <h2>Choose a new<em>password.</em></h2>
+                <label>New password<input name="password" type="password" required minlength="8" autocomplete="new-password"></label>
+                <div class="auth-error" id="resetError" role="alert"></div>
+                <button class="button button-dark auth-submit">Save new password <span>→</span></button>
+            </form>
+        </dialog>
+        <datalist id="indiaStates">
+        </datalist>
+        <datalist id="cgDistricts">
+        </datalist>
+        <datalist id="cgCities">
+        </datalist>
+        <div class="toast" id="toast" role="status">
+        </div>
+        <script src="app.js">
+        </script>
+    </body>
+</html>
